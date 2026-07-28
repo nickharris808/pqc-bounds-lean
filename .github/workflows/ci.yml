@@ -4,32 +4,36 @@ on:
   pull_request:
   workflow_dispatch:
 
+# elan is installed directly rather than via lean-action, which requires a
+# lake-manifest.json. This project has no dependencies, so there is no manifest to
+# commit and nothing for `lake update` to resolve -- installing the toolchain and
+# typechecking is the whole build, and it is what the README tells a reader to do.
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: leanprover/lean-action@v1
-        with:
-          auto-config: false
-          build: false
-          test: false
+      - name: Install elan
+        run: |
+          curl -sSfL https://github.com/leanprover/elan/releases/latest/download/elan-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          ./elan-init -y --default-toolchain "$(cat lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - run: lean --version
       - name: Typecheck every development, reject any sorry
         run: ./verify.sh
 
-  # A checker that cannot fail is not a checker. This asserts verify.sh still has
-  # teeth by planting an admitted proof and requiring a non-zero exit.
   teeth:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: leanprover/lean-action@v1
-        with:
-          auto-config: false
-          build: false
-          test: false
+      - name: Install elan
+        run: |
+          curl -sSfL https://github.com/leanprover/elan/releases/latest/download/elan-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          ./elan-init -y --default-toolchain "$(cat lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: A planted sorry must be caught
         run: |
+          ./verify.sh || { echo "::error::baseline is not green; teeth test would be vacuous"; exit 1; }
           printf '\ntheorem planted_unsound (n : Nat) : n = n + 1 := by sorry\n' >> Bound/Bound.lean
           if ./verify.sh; then
             echo "::error::verify.sh accepted a planted sorry"

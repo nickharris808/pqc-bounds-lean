@@ -12,7 +12,7 @@
 set -eu
 status=0
 for f in Bound/*.lean; do
-    if ! out=$(lake env lean "$f" 2>&1); then
+    if ! out=$(lean "$f" 2>&1); then
         printf '  FAIL  %-26s lean exited non-zero\n' "$f"; status=1; continue
     fi
     if printf '%s' "$out" | grep -q "declaration uses"; then
