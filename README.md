@@ -11,6 +11,8 @@
 Four developments, 20 theorems, **zero `sorry`, zero imports**. No mathlib, no
 network, no `lake update`. `lean` typechecks each file in seconds.
 
+**📖 Full documentation, tutorial and conceptual guide: <https://nickharris808.github.io/pqc-toolkit/>**
+
 ---
 
 ## Why zero imports matters
