@@ -1,0 +1,10 @@
+name = "pqc-bounds"
+version = "0.1.0"
+defaultTargets = ["Bound"]
+
+# Mathlib-free and self-contained: these developments depend only on Lean 4 core
+# (Nat arithmetic and the `omega` decision procedure), so `lake build` needs no
+# network and finishes in seconds. The trusted base is the Lean kernel alone.
+
+[[lean_lib]]
+name = "Bound"

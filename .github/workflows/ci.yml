@@ -1,0 +1,38 @@
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: false
+          test: false
+      - name: Typecheck every development, reject any sorry
+        run: ./verify.sh
+
+  # A checker that cannot fail is not a checker. This asserts verify.sh still has
+  # teeth by planting an admitted proof and requiring a non-zero exit.
+  teeth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: false
+          test: false
+      - name: A planted sorry must be caught
+        run: |
+          printf '\ntheorem planted_unsound (n : Nat) : n = n + 1 := by sorry\n' >> Bound/Bound.lean
+          if ./verify.sh; then
+            echo "::error::verify.sh accepted a planted sorry"
+            exit 1
+          fi
+          echo "verify.sh correctly rejected the planted sorry"
