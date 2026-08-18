@@ -1,5 +1,6 @@
 # pqc-bounds-lean
 
+[![ci](https://github.com/nickharris808/pqc-bounds-lean/actions/workflows/ci.yml/badge.svg)](https://github.com/nickharris808/pqc-bounds-lean/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![lean](https://img.shields.io/badge/Lean-4.31.0-blueviolet.svg)](lean-toolchain)
 [![sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](verify.sh)
@@ -124,7 +125,7 @@ Three independent checks of the same bound:
 | Where | How |
 |---|---|
 | **here** | Lean 4, mathlib-free, kernel-only trusted base |
-| [`farkas-check`](https://github.com/nickharris808/farkas-check) | 123 lines of integer C, on-device, no solver |
+| [`farkas-check`](https://github.com/nickharris808/farkas-check) | 216 lines of integer C (132 code), on-device, no solver |
 | [`pqc-dos-embedded`](https://github.com/nickharris808/pqc-dos-embedded) | the failure and the bound on emulated ARMv7-M |
 
 [`pqc-sizes`](https://github.com/nickharris808/pqc-sizes) ·
