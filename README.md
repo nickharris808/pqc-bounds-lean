@@ -134,8 +134,7 @@ Three independent checks of the same bound:
 theorems appear in it by name)
 
 These developments prove *the bound*. Enforcing it across the full post-quantum
-migration failure surface is a separate closed codebase, and relevant subject
-matter is covered by a filed provisional patent application. For commercial use,
+migration failure surface is a separate closed codebase, and patent claims have been drafted for relevant subject matter (filing status available on request). For commercial use,
 open a GitHub Discussion or an issue.
 
 ## License
